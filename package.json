@@ -1,0 +1,28 @@
+{
+  "name": "border",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:build": "npx webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@alch/alchemy-web3": "^1.1.7",
+    "babel-polyfill": "^6.26.0",
+    "bnc-onboard": "^1.35.3",
+    "jquery": "^3.6.0",
+    "path-browserify": "^1.0.1",
+    "wallet-validator": "^0.3.8",
+    "web3": "^1.6.0",
+    "webpack": "^5.61.0",
+    "webpack-dev-server": "^4.4.0"
+  },
+  "devDependencies": {
+    "node-polyfill-webpack-plugin": "^1.1.4",
+    "stream-http": "^3.2.0",
+    "webpack-cli": "^4.9.1"
+  }
+}
