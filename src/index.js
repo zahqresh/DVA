@@ -2,7 +2,9 @@ import { connectWallet, mint } from "./script";
 
 
 
-connectWallet();
+global.implement = ()=>{
+    connectWallet();
+}
 
 global.mintnow = (amount)=>{
     mint(amount);

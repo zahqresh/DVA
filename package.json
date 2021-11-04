@@ -15,10 +15,12 @@
     "bnc-onboard": "^1.35.3",
     "jquery": "^3.6.0",
     "path-browserify": "^1.0.1",
+    "randomstring": "^1.2.1",
     "wallet-validator": "^0.3.8",
     "web3": "^1.6.0",
     "webpack": "^5.61.0",
-    "webpack-dev-server": "^4.4.0"
+    "webpack-dev-server": "^4.4.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
     "node-polyfill-webpack-plugin": "^1.1.4",
