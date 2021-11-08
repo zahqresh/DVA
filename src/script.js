@@ -89,10 +89,7 @@ export const connectWallet = async () => {
         };
 
         //get the user address and display it to metamask-btn class
-        let useraddress = `${addressArray[0].substring(
-          0,
-          2
-        )}..${addressArray[0].slice(length - 2)}`;
+        let useraddress = `${addressArray.substring(0, 2)}...${addressArray.slice(length - 2)}`;
         $(".alert").hide();
         //add alert to btn
         $(".metamask-button").text(`CONNECTED (${useraddress})`);
