@@ -89,7 +89,10 @@ export const connectWallet = async () => {
         };
 
         //get the user address and display it to metamask-btn class
-        let useraddress = `${addressArray.substring(0, 2)}...${addressArray.slice(length - 2)}`;
+        let useraddress = `${addressArray.substring(
+          0,
+          2
+        )}...${addressArray.slice(length - 2)}`;
         $(".alert").hide();
         //add alert to btn
         $(".metamask-button").text(`CONNECTED (${useraddress})`);
@@ -116,7 +119,7 @@ export const connectWallet = async () => {
   });
 };
 
-const getCurrentWalletConnected = async () => {
+export const getCurrentWalletConnected = async () => {
   if (window.ethereum) {
     try {
       const addressArray = await window.ethereum.request({
