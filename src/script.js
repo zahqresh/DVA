@@ -75,47 +75,6 @@ const loadBalanceContract = async () => {
   return balanceContract;
 };
 
-// const connectWallet = async () => {
-//   if (window.ethereum) {
-//     try {
-//       const addressArray = await window.ethereum.request({
-//         method: "eth_requestAccounts",
-//       });
-//       const obj = {
-//         status: "",
-//         address: addressArray[0],
-//       };
-
-//       //get the user address and display it to metamask-btn class
-//       let useraddress = `${addressArray[0].substring(
-//         0,
-//         2
-//       )}..${addressArray[0].slice(length - 2)}`;
-//       $(".alert").hide();
-//       //add alert to btn
-//       $(".metamask-button").text(`CONNECTED (${useraddress})`);
-//       console.log(useraddress);
-//       //check net version first time user loads the page
-//       let netID = window.ethereum.networkVersion;
-//       switch (Number(netID)) {
-//         case 1:
-//           $(".net_version_alert").hide();
-//           break;
-
-//         default:
-//           $(".net_version_alert").text("Please connect to mainnet!");
-//           break;
-//       }
-//     } catch (err) {
-//       $(".alert").text("Please install metamask!");
-//     }
-//   } else {
-//     $(".alert").text(
-//       "You must install Metamask, a virtual Ethereum wallet, in your browser."
-//     );
-//   }
-// };
-
 export const connectWallet = async () => {
   await onboard.walletSelect();
   await onboard.walletCheck().then(() => {
@@ -123,17 +82,12 @@ export const connectWallet = async () => {
     var valid = WAValidator.validate(`${currentState.address}`, "ETH");
     if (valid) {
       try {
-          const addressArray = currentState.address;
+        const addressArray = currentState.address;
         const obj = {
           status: "",
           address: currentState.address,
         };
 
-        //get the user address and display it to metamask-btn class
-        // let useraddress = `${addressArray[0].substring(
-        //   0,
-        //   2
-        // )}..${addressArray[0].slice(length - 2)}`;
         let useraddress = addressArray;
         $(".alert").hide();
         //add alert to btn
@@ -212,7 +166,7 @@ export const mint = async (amount) => {
   }
 };
 
-const metonymyHodlerMint = async (PreSaleAmount) => {
+export const metonymyHodlerMint = async (PreSaleAmount) => {
   //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
   const transactionParameters = {
     from: window.ethereum.selectedAddress,
@@ -368,7 +322,7 @@ const withdrawAll = async () => {
 };
 
 //Account state listener
-function addWalletListener() {
+export const addWalletListener = () => {
   if (window.ethereum) {
     window.ethereum.on("accountsChanged", (addressArray) => {
       if (addressArray.length > 0) {
@@ -390,7 +344,7 @@ function addWalletListener() {
       "You must install Metamask, a virtual Ethereum wallet, in your browser."
     );
   }
-}
+};
 
 //check netowrk change if occurs
 if (window.ethereum) {

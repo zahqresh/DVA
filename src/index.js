@@ -1,11 +1,21 @@
-import { connectWallet, mint } from "./script";
+import { connectWallet, metonymyHodlerMint, mint } from "./script";
 
+//connect to the wallet
+global.implementWallet = () => {
+  connectWallet();
+};
 
+//minting for holders
+global.holdersMint = (amount) => {
+  metonymyHodlerMint(amount);
+};
 
-global.implement = ()=>{
-    connectWallet();
-}
+//General minting
+global.generalMint = (amount) => {
+  mint(amount);
+};
 
-global.mintnow = (amount)=>{
-    mint(amount);
-}
+//wallet event listener
+global.waletChanges = () => {
+  addEventListener();
+};
