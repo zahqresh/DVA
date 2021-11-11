@@ -9,7 +9,7 @@ let web;
 const FORTMATIC_KEY = "pk_live_7CFC103369096AD4";
 const PORTIS_KEY = "Your Portis key here";
 const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
-const APP_URL = "http:localhost:3000";
+const APP_URL = "https://www.kvltzombies.xyz/kvlt-zombies-minting-mobile";
 const CONTACT_EMAIL = "muhammadhamza2965@gmail.com";
 const RPC_URL = `https://mainnet.infura.io/v3/${INFURA_KEY}`;
 const APP_NAME = "onboardjs";
@@ -115,43 +115,15 @@ export const connectWallet = async () => {
   await onboard.walletSelect();
   await onboard.walletCheck();
 
-  const currentState = onboard.getState();
-  var valid = WAValidator.validate(`${currentState.address}`, "ETH");
-  if (valid) {
-    try {
-      const addressArray = currentState.address;
-      const obj = {
-        status: "",
-        address: currentState.address,
-      };
+  await onboard.walletSelect();
+  await onboard.walletCheck();
 
-      //get the user address and display it to metamask-btn class
-      let useraddress = `${addressArray.substring(0, 2)}...${addressArray.slice(
-        length - 2
-      )}`;
-      $(".alert").hide();
-      //add alert to btn
-      $(".metamask-button").text(`Disconnect (${useraddress})`);
-      console.log(useraddress);
-      //check net version first time user loads the page
-      let netID = window.ethereum.networkVersion;
-      switch (Number(netID)) {
-        case 1:
-          $(".net_version_alert").hide();
-          break;
-
-        default:
-          $(".net_version_alert").text("Please connect to mainnet!");
-          break;
-      }
-    } catch (err) {
-      $(".alert").text(``);
-    }
-  } else {
-    $(".alert").text(
-      "You must install Metamask, a virtual Ethereum wallet, in your browser."
-    );
-  }
+  //window.alert(onboard.getState().address);
+  $(".metamask-button").text(
+    `Disconnect ${onboard.getState().address.substring(0, 2)}...${onboard
+      .getState()
+      .address.slice(onboard.getState().address.length - 2)}`
+  );
 };
 
 export const walletReset = () => {
