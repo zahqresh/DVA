@@ -6,13 +6,49 @@ var WAValidator = require("wallet-validator");
 
 let web;
 
-const onboard = Onboard({
+const FORTMATIC_KEY = "pk_live_7CFC103369096AD4";
+const PORTIS_KEY = "Your Portis key here";
+const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
+const APP_URL = "http:localhost:3000";
+const CONTACT_EMAIL = "muhammadhamza2965@gmail.com";
+const RPC_URL = `https://mainnet.infura.io/v3/${INFURA_KEY}`;
+const APP_NAME = "onboardjs";
+
+//wallet options to provide to users
+const wallets = [
+  { walletName: "metamask", preferred: true },
+  {
+    walletName: "walletConnect",
+    infuraKey: INFURA_KEY,
+  },
+  { walletName: "coinbase", preferred: true },
+  {
+    walletName: "ledger",
+    rpcUrl: RPC_URL,
+  },
+  {
+    walletName: "trezor",
+    appUrl: APP_URL,
+    email: CONTACT_EMAIL,
+    rpcUrl: RPC_URL,
+  },
+  {
+    walletName: "fortmatic",
+    apiKey: FORTMATIC_KEY,
+  },
+  { walletName: "gnosis" },
+];
+
+export const onboard = Onboard({
   dappId: "e57157dd-aa3a-4b2a-a88d-36520d0193d9", // [String] The API key created by step one above
   networkId: 1, // [Integer] The Ethereum network ID your Dapp uses.
   subscriptions: {
     wallet: (wallet) => {
       web = new Web3(wallet.provider);
     },
+  },
+  walletSelect: {
+    wallets: wallets,
   },
 });
 
@@ -75,7 +111,8 @@ const loadBalanceContract = async () => {
   return balanceContract;
 };
 
-export const connectWallet = async () => {
+
+export const connectWallet = async () => {  
   await onboard.walletSelect();
   await onboard.walletCheck().then(() => {
     const currentState = onboard.getState();
@@ -95,7 +132,7 @@ export const connectWallet = async () => {
         )}...${addressArray.slice(length - 2)}`;
         $(".alert").hide();
         //add alert to btn
-        $(".metamask-button").text(`CONNECTED (${useraddress})`);
+        $(".metamask-button").text(`Disconnect (${useraddress})`);
         console.log(useraddress);
         //check net version first time user loads the page
         let netID = window.ethereum.networkVersion;
@@ -117,6 +154,17 @@ export const connectWallet = async () => {
       );
     }
   });
+};
+
+export const walletReset = () => {
+  onboard.walletReset();
+};
+
+export const walletState = () => {
+  const currentState = onboard.getState()
+  
+  console.log(currentState);
+  return currentState;
 };
 
 export const getCurrentWalletConnected = async () => {
@@ -367,3 +415,5 @@ if (window.ethereum) {
     }
   });
 }
+
+

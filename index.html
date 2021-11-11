@@ -1,21 +1,49 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1-rc.3/web3.min.js"
+      integrity="sha512-0KTZZdA9E3vaLClQkC6S9roiHr9J2A79Q/BvcIwd8LjRVAQcwrT1zorS7hfZ7B3Nr/u6bYzNG/wXOAOADdJ7qQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <title>Document</title>
-</head>
-<body>
-    <button class="metamask-button"  onclick="implementWallet()">connect</button>
+  </head>
+  <body>
+    <button class="metamask-button">connect</button>
     <button onclick="generalMint(1)">General Mint</button>
     <button onclick="holdersMint(1)">Holders Mint</button>
+    <button onclick="walletReset()">Reset Wallet</button>
+    <button onclick="state()">Wallet State</button>
     <div class="alert"></div>
     <div class="net_version_alert"></div>
-    <script src="/dist/main-m5Bx.js"></script>
+    <script src="/dist/main-DTAk.js"></script>
     <script>
-        walletChanges()
-     let currentAccount = null;
+      //wallet change listener
+      walletChanges();
+      //Minting limited to 3
+      $(".mint").click(function () {
+        let num = $(".number_text").text();
+        generalMint(Number(num));
+      });
+      let state = onboardObj.getState();
 
+      $(".metamask-button").click(function () {
+        if (onboardObj.getState().address != undefined) {
+          walletReset();
+          console.log("reseting wallet");
+          $(".metamask-button").text("Connect");
+        } else {
+          implementWallet();
+        }
+      });
     </script>
-</body>
+  </body>
 </html>

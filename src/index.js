@@ -1,4 +1,12 @@
-import { addWalletListener, connectWallet, metonymyHodlerMint, mint } from "./script";
+import {
+  addWalletListener,
+  connectWallet,
+  metonymyHodlerMint,
+  mint,
+  onboard,
+  walletReset,
+  walletState,
+} from "./script";
 
 //connect to the wallet
 global.implementWallet = () => {
@@ -20,3 +28,9 @@ global.walletChanges = () => {
   addWalletListener();
 };
 
+global.walletReset = () => {
+  walletReset();
+};
+
+global.state = walletState();
+global.onboardObj = onboard;
