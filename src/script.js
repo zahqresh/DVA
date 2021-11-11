@@ -115,9 +115,6 @@ export const connectWallet = async () => {
   await onboard.walletSelect();
   await onboard.walletCheck();
 
-  await onboard.walletSelect();
-  await onboard.walletCheck();
-
   //window.alert(onboard.getState().address);
   $(".metamask-button").text(
     `Disconnect ${onboard.getState().address.substring(0, 2)}...${onboard
