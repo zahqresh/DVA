@@ -111,49 +111,47 @@ const loadBalanceContract = async () => {
   return balanceContract;
 };
 
-
-export const connectWallet = async () => {  
+export const connectWallet = async () => {
   await onboard.walletSelect();
-  await onboard.walletCheck().then(() => {
-    const currentState = onboard.getState();
-    var valid = WAValidator.validate(`${currentState.address}`, "ETH");
-    if (valid) {
-      try {
-        const addressArray = currentState.address;
-        const obj = {
-          status: "",
-          address: currentState.address,
-        };
+  await onboard.walletCheck();
 
-        //get the user address and display it to metamask-btn class
-        let useraddress = `${addressArray.substring(
-          0,
-          2
-        )}...${addressArray.slice(length - 2)}`;
-        $(".alert").hide();
-        //add alert to btn
-        $(".metamask-button").text(`Disconnect (${useraddress})`);
-        console.log(useraddress);
-        //check net version first time user loads the page
-        let netID = window.ethereum.networkVersion;
-        switch (Number(netID)) {
-          case 1:
-            $(".net_version_alert").hide();
-            break;
+  const currentState = onboard.getState();
+  var valid = WAValidator.validate(`${currentState.address}`, "ETH");
+  if (valid) {
+    try {
+      const addressArray = currentState.address;
+      const obj = {
+        status: "",
+        address: currentState.address,
+      };
 
-          default:
-            $(".net_version_alert").text("Please connect to mainnet!");
-            break;
-        }
-      } catch (err) {
-        $(".alert").text(``);
+      //get the user address and display it to metamask-btn class
+      let useraddress = `${addressArray.substring(0, 2)}...${addressArray.slice(
+        length - 2
+      )}`;
+      $(".alert").hide();
+      //add alert to btn
+      $(".metamask-button").text(`Disconnect (${useraddress})`);
+      console.log(useraddress);
+      //check net version first time user loads the page
+      let netID = window.ethereum.networkVersion;
+      switch (Number(netID)) {
+        case 1:
+          $(".net_version_alert").hide();
+          break;
+
+        default:
+          $(".net_version_alert").text("Please connect to mainnet!");
+          break;
       }
-    } else {
-      $(".alert").text(
-        "You must install Metamask, a virtual Ethereum wallet, in your browser."
-      );
+    } catch (err) {
+      $(".alert").text(``);
     }
-  });
+  } else {
+    $(".alert").text(
+      "You must install Metamask, a virtual Ethereum wallet, in your browser."
+    );
+  }
 };
 
 export const walletReset = () => {
@@ -161,8 +159,8 @@ export const walletReset = () => {
 };
 
 export const walletState = () => {
-  const currentState = onboard.getState()
-  
+  const currentState = onboard.getState();
+
   console.log(currentState);
   return currentState;
 };
@@ -197,7 +195,7 @@ export const getCurrentWalletConnected = async () => {
 export const mint = async (amount) => {
   //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
   const transactionParameters = {
-    from: window.ethereum.selectedAddress,
+    from: onboard.getState().address,
     to: contractAddress,
     value: web3.utils.toHex(price * amount),
     data: theContract.methods.mint(amount).encodeABI(),
@@ -221,7 +219,7 @@ export const mint = async (amount) => {
 export const metonymyHodlerMint = async (PreSaleAmount) => {
   //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
   const transactionParameters = {
-    from: window.ethereum.selectedAddress,
+    from: onboard.getState().address,
     to: contractAddress,
     value: web3.utils.toHex(presaleprice * PreSaleAmount),
     data: theContract.methods.metonymyHodlerMint(PreSaleAmount).encodeABI(),
@@ -415,5 +413,3 @@ if (window.ethereum) {
     }
   });
 }
-
-
