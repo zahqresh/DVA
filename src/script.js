@@ -155,9 +155,7 @@ export const getCurrentWalletConnected = async () => {
       $(".alert").text(`${err.message}`);
     }
   } else {
-    $(".alert").text(
-      "You must install Metamask, a virtual Ethereum wallet, in your browser."
-    );
+    $(".alert").text("Please connect a wallet");
   }
 };
 
@@ -180,8 +178,17 @@ export const mint = async (amount) => {
         txHash
     );
   } catch (error) {
-    $(".alert").show();
-    $(".alert").text(`${error.message}`);
+    if (error.code == 4001) {
+      $(".alert").show();
+      console.log(error.message);
+      $(".alert").text(`Transacion have been Denied!.`);
+    } else {
+      $(".alert").show();
+      console.log(error.message);
+      $(".alert").text(
+        `Please connect a wallet first, before you can mint a KVLT Zombie`
+      );
+    }
   }
 };
 
@@ -204,8 +211,17 @@ export const metonymyHodlerMint = async (PreSaleAmount) => {
         txHash
     );
   } catch (error) {
-    $(".alert").show();
-    $(".alert").text(`${error.message}`);
+    if (error.code == 4001) {
+      $(".alert").show();
+      console.log(error.message);
+      $(".alert").text(`Transacion have been Denied!.`);
+    } else {
+      $(".alert").show();
+      console.log(error.message);
+      $(".alert").text(
+        `Please connect a wallet first, before you can mint a KVLT Zombie`
+      );
+    }
   }
 };
 
@@ -355,13 +371,11 @@ export const addWalletListener = () => {
         $(".metamask-button").text(`CONNECTED (${useraddress})`);
         console.log(useraddress);
       } else {
-        $(".alert").text("Please install metamask!");
+        $(".alert").text("Please connect a wallet");
       }
     });
   } else {
-    $(".alert").text(
-      "You must install Metamask, a virtual Ethereum wallet, in your browser."
-    );
+    $(".alert").text("Please connect a wallet");
   }
 };
 
