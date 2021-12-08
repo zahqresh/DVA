@@ -20,6 +20,7 @@ global.holdersMint = (amount) => {
 
 //General minting
 global.generalMint = (amount) => {
+  
   mint(amount);
 };
 
