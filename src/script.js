@@ -26,6 +26,7 @@ const whitelistAddresses = [
   "0xA030ed6d2752a817747a30522B4f3F1b7f039c82",
   "0xA030ed6d2752a817747a30522B4f3F1b7f039c83",
   "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
+  "0xa030ed6d2752a817747a30522b4f3f1b7f039c80"
 ];
 
 const leafNodes = whitelistAddresses.map((addr) => keccak256(addr));
