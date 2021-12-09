@@ -1,10 +1,10 @@
 import Onboard from "bnc-onboard";
 import Web3 from "web3";
-//import { abi } from "./abi";
+import { abi } from "./abi";
 import $ from "jquery";
 var WAValidator = require("wallet-validator");
 const { MerkleTree } = require("merkletreejs");
-const SHA256 = require("crypto-js/sha256");
+const keccak256 = require("keccak256");
 let web;
 
 const FORTMATIC_KEY = "pk_live_7CFC103369096AD4";
@@ -14,6 +14,22 @@ const APP_URL = "https://www.kvltzombies.xyz/kvlt-zombies-minting-mobile";
 const CONTACT_EMAIL = "muhammadhamza2965@gmail.com";
 const RPC_URL = `https://mainnet.infura.io/v3/${INFURA_KEY}`;
 const APP_NAME = "onboardjs";
+
+
+//merkletree config
+const whitelistAddresses = [
+  "0x7d52923Ca0135F59B15986FCADeC7107758BbeFd",
+  "0x4700B37362616085965e7B0AAD13A4f21Ec83b65",
+  "0xA5c129E3EC80daB54F08C0f7D5B833f03D161007",
+  "0xA030ed6d2752a817747a30522B4f3F1b7f039c80",
+  "0xA030ed6d2752a817747a30522B4f3F1b7f039c81",
+  "0xA030ed6d2752a817747a30522B4f3F1b7f039c82",
+  "0xA030ed6d2752a817747a30522B4f3F1b7f039c83",
+  "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
+];
+
+const leafNodes = whitelistAddresses.map((addr) => keccak256(addr));
+const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true });
 
 //wallet options to provide to users
 const wallets = [
@@ -58,357 +74,13 @@ const web3 = createAlchemyWeb3(
   "wss://eth-rinkeby.alchemyapi.io/v2/59kESS0j2TfE3vAK8-aCcoUggCc3WTaL"
 );
 
-const contractABI = [
-  {
-    inputs: [
-      { internalType: "string", name: "baseURI", type: "string" },
-      { internalType: "bytes32", name: "merkleroot", type: "bytes32" },
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "approved",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
-    ],
-    name: "Approval",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "operator",
-        type: "address",
-      },
-      { indexed: false, internalType: "bool", name: "approved", type: "bool" },
-    ],
-    name: "ApprovalForAll",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "previousOwner",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
-      },
-    ],
-    name: "OwnershipTransferred",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: "address", name: "from", type: "address" },
-      { indexed: true, internalType: "address", name: "to", type: "address" },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
-    ],
-    name: "Transfer",
-    type: "event",
-  },
-  {
-    inputs: [],
-    name: "PresaleIsActive",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "_baseTokenURI",
-    outputs: [{ internalType: "string", name: "", type: "string" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "to", type: "address" },
-      { internalType: "uint256", name: "tokenId", type: "uint256" },
-    ],
-    name: "approve",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "address", name: "owner", type: "address" }],
-    name: "balanceOf",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
-    name: "getApproved",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getBalance",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getCurrentId",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getPrice",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getRoot",
-    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getTokenSupply",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "owner", type: "address" },
-      { internalType: "address", name: "operator", type: "address" },
-    ],
-    name: "isApprovedForAll",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "uint256", name: "mintCount", type: "uint256" },
-      { internalType: "bytes32[]", name: "proof", type: "bytes32[]" },
-    ],
-    name: "mintPresale",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "mintCount", type: "uint256" }],
-    name: "mintPublic",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "name",
-    outputs: [{ internalType: "string", name: "", type: "string" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "owner",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
-    name: "ownerOf",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "renounceOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "root",
-    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "from", type: "address" },
-      { internalType: "address", name: "to", type: "address" },
-      { internalType: "uint256", name: "tokenId", type: "uint256" },
-    ],
-    name: "safeTransferFrom",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "from", type: "address" },
-      { internalType: "address", name: "to", type: "address" },
-      { internalType: "uint256", name: "tokenId", type: "uint256" },
-      { internalType: "bytes", name: "_data", type: "bytes" },
-    ],
-    name: "safeTransferFrom",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "saleIsActive",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "operator", type: "address" },
-      { internalType: "bool", name: "approved", type: "bool" },
-    ],
-    name: "setApprovalForAll",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "string", name: "baseURI", type: "string" }],
-    name: "setBaseURI",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "price", type: "uint256" }],
-    name: "setPrice",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "bytes32", name: "merkleroot", type: "bytes32" }],
-    name: "setRoot",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "bytes4", name: "interfaceId", type: "bytes4" }],
-    name: "supportsInterface",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "symbol",
-    outputs: [{ internalType: "string", name: "", type: "string" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "togglePresale",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "toggleSale",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
-    name: "tokenURI",
-    outputs: [{ internalType: "string", name: "", type: "string" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "from", type: "address" },
-      { internalType: "address", name: "to", type: "address" },
-      { internalType: "uint256", name: "tokenId", type: "uint256" },
-    ],
-    name: "transferFrom",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
-    name: "transferOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "withdraw",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-];
+const contractABI = abi;
 const contractAddress = "0xC6DD5E4ecB97E31cAee4a10CC86B4AD5286fa2EC";
 
 const theContract = new web3.eth.Contract(contractABI, contractAddress);
 
-const price = "10000000000000000";
-const presaleprice = "40000000000000000";
+const price = "35000000000000000";
+const presaleprice = "35000000000000000";
 
 const loadCurrentSupply = async () => {
   const supply = await theContract.methods.totalSupply().call();
@@ -507,21 +179,23 @@ export const getCurrentWalletConnected = async () => {
 export const mint = async (amount) => {
   //create the merkletree
   //setup merkletreejs
-  const leaves = [
-    "0x7d52923Ca0135F59B15986FCADeC7107758BbeFd",
-    "0x4700B37362616085965e7B0AAD13A4f21Ec83b65",
-    "0xA5c129E3EC80daB54F08C0f7D5B833f03D161007",
-    "0xA030ed6d2752a817747a30522B4f3F1b7f039c80",
-  ].map((x) => SHA256(x));
-  const tree = new MerkleTree(leaves, SHA256);
-  const proof = tree.getHexProof(`${onboard.getState().address}`);
-  //const root = tree.getRoot().toString("hex");
+  
+
+  //console.log(merkleTree.getHexRoot())
+
+  const claimingAddress = keccak256(onboard.getState().address);
+
+  //get the root for the whitelisted address
+  const hexProof = merkleTree.getHexProof(claimingAddress);
+
   //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
   const transactionParameters = {
     from: onboard.getState().address,
     to: contractAddress,
     value: web3.utils.toHex(price * amount),
-    data: theContract.methods.mintPresale(amount, proof).encodeABI(),
+    data: theContract.methods
+      .mintPresale(amount, hexProof)
+      .encodeABI(),
   };
   try {
     const txHash = await window.ethereum.request({
