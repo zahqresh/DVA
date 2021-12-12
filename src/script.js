@@ -19,14 +19,8 @@ const APP_NAME = "onboardjs";
 //merkletree config
 const whitelistAddresses = [
   "0x7d52923Ca0135F59B15986FCADeC7107758BbeFd",
-  "0x4700B37362616085965e7B0AAD13A4f21Ec83b65",
-  "0xA5c129E3EC80daB54F08C0f7D5B833f03D161007",
-  "0xA030ed6d2752a817747a30522B4f3F1b7f039c80",
-  "0xA030ed6d2752a817747a30522B4f3F1b7f039c81",
-  "0xA030ed6d2752a817747a30522B4f3F1b7f039c82",
-  "0xA030ed6d2752a817747a30522B4f3F1b7f039c83",
-  "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
-  "0xa030ed6d2752a817747a30522b4f3f1b7f039c80"
+  "0x3bcF2Ec850E30Eb52d61D5a4Fc451436818F5a1e",
+  "0x8277EeC6B3dfb115CC1663426DD738eB719cc19b"
 ];
 
 const leafNodes = whitelistAddresses.map((addr) => keccak256(addr));
@@ -76,7 +70,7 @@ const web3 = createAlchemyWeb3(
 );
 
 const contractABI = abi;
-const contractAddress = "0xC6DD5E4ecB97E31cAee4a10CC86B4AD5286fa2EC";
+const contractAddress = "0x17327b822Ab6Ca02b4c89622C00BB54a112Fa903";
 
 const theContract = new web3.eth.Contract(contractABI, contractAddress);
 
