@@ -2,6 +2,7 @@ import Onboard from "bnc-onboard";
 import Web3 from "web3";
 import { abi } from "./abi";
 import $ from "jquery";
+import { addresses } from "./whiteListed";
 var WAValidator = require("wallet-validator");
 const { MerkleTree } = require("merkletreejs");
 const keccak256 = require("keccak256");
@@ -16,12 +17,7 @@ const RPC_URL = `https://mainnet.infura.io/v3/${INFURA_KEY}`;
 const APP_NAME = "onboardjs";
 
 //merkletree config
-const whitelistAddresses = [
-  "0x7d52923Ca0135F59B15986FCADeC7107758BbeFd",
-  "0x3bcF2Ec850E30Eb52d61D5a4Fc451436818F5a1e",
-  "0x8277EeC6B3dfb115CC1663426DD738eB719cc19b",
-  "0xA030ed6d2752a817747a30522B4f3F1b7f039c80",
-];
+const whitelistAddresses = addresses;
 
 const leafNodes = whitelistAddresses.map((addr) => keccak256(addr));
 const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true });
@@ -78,7 +74,7 @@ const price = "35000000000000000";
 const presaleprice = "35000000000000000";
 
 const loadCurrentSupply = async () => {
-  const supply = await theContract.methods.getTokenSupply().call();
+  const supply = await theContract.methods.getCurrentId().call();
 
   return supply;
 };
