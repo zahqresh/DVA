@@ -4,6 +4,7 @@ import {
   metonymyHodlerMint,
   mint,
   onboard,
+  supply,
   walletReset,
   walletState,
 } from "./script";
@@ -13,14 +14,13 @@ global.implementWallet = () => {
   connectWallet();
 };
 
-//minting for holders
-global.holdersMint = (amount) => {
+//minting for general public
+global.publicMint = (amount) => {
   metonymyHodlerMint(amount);
 };
 
-//General minting
-global.generalMint = (amount) => {
-  
+//Presale mint
+global.presaleMint = (amount) => {
   mint(amount);
 };
 
@@ -29,9 +29,12 @@ global.walletChanges = () => {
   addWalletListener();
 };
 
+//reset the wallet
 global.walletReset = () => {
   walletReset();
 };
+
+
 
 global.state = walletState();
 global.onboardObj = onboard;

@@ -15,7 +15,6 @@ const CONTACT_EMAIL = "muhammadhamza2965@gmail.com";
 const RPC_URL = `https://mainnet.infura.io/v3/${INFURA_KEY}`;
 const APP_NAME = "onboardjs";
 
-
 //merkletree config
 const whitelistAddresses = [
   "0x7d52923Ca0135F59B15986FCADeC7107758BbeFd",
@@ -26,7 +25,7 @@ const whitelistAddresses = [
   "0xA030ed6d2752a817747a30522B4f3F1b7f039c82",
   "0xA030ed6d2752a817747a30522B4f3F1b7f039c83",
   "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
-  "0xa030ed6d2752a817747a30522b4f3f1b7f039c80"
+  "0xa030ed6d2752a817747a30522b4f3f1b7f039c80",
 ];
 
 const leafNodes = whitelistAddresses.map((addr) => keccak256(addr));
@@ -84,20 +83,28 @@ const price = "35000000000000000";
 const presaleprice = "35000000000000000";
 
 const loadCurrentSupply = async () => {
-  const supply = await theContract.methods.totalSupply().call();
+  const supply = await theContract.methods.getTokenSupply().call();
 
   return supply;
 };
 
 //Get the supply and attach
-loadCurrentSupply()
-  .then((val) => {
-    $(".supply").text(`${5555 - val}/5.555`);
-  })
-  .catch((err) => {
-    console.log(err);
-    $(".supply").text("Sorry error occured!");
-  });
+//run this function every 3 sec
+//class required to display would be .supply
+setInterval(() => {
+  loadCurrentSupply()
+    .then((val) => {
+      $(".supply").text(`${6666 - val}/6.666`);
+      console.log(val,'Running supply');
+    })
+    .catch((err) => {
+      console.log(err);
+      $(".supply").text("Sorry error occured!");
+    });
+}, 3000);
+
+
+
 
 const loadPreSaleStatus = async () => {
   const preSaleActive = await theContract.methods._preSaleIsActive
@@ -180,7 +187,6 @@ export const getCurrentWalletConnected = async () => {
 export const mint = async (amount) => {
   //create the merkletree
   //setup merkletreejs
-  
 
   //console.log(merkleTree.getHexRoot())
 
@@ -194,9 +200,7 @@ export const mint = async (amount) => {
     from: onboard.getState().address,
     to: contractAddress,
     value: web3.utils.toHex(price * amount),
-    data: theContract.methods
-      .mintPresale(amount, hexProof)
-      .encodeABI(),
+    data: theContract.methods.mintPresale(amount, hexProof).encodeABI(),
   };
   try {
     const txHash = await window.ethereum.request({
@@ -212,13 +216,11 @@ export const mint = async (amount) => {
     if (error.code == 4001) {
       $(".alert").show();
       console.log(error.message);
-      $(".alert").text(`Transacion have been Denied!.`);
+      $(".alert").text(`Transacion Denied!.`);
     } else {
       $(".alert").show();
       console.log(error.message);
-      $(".alert").text(
-        `Please connect a wallet first, before you can mint a KVLT Zombie`
-      );
+      $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
     }
   }
 };
