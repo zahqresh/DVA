@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev:build": "npx webpack --mode=development",
-    "prod:build": "npx webpack --mode=production"
+    "prod:build": "npx webpack --mode=production",
+    "merkle": "node MerkleGeneration.js"
   },
   "keywords": [],
   "author": "",
