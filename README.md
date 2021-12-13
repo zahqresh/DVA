@@ -1,2 +1,2 @@
-# onboardjs
-Onboardjs web3 implementation with multiple wallet options
+# Bobos Webflow Script
+Web3js and onboardjs implementation for bobos
