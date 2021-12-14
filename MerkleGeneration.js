@@ -22,4 +22,4 @@ const claimingAddress = leafNodes[1];
 //get the proof for the whitelisted address
 const hexProof = merkleTree.getHexProof(claimingAddress);
 
-console.log(hexProof);
+console.log(merkleTree.getHexRoot());
