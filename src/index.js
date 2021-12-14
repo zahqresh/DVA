@@ -8,8 +8,10 @@ import {
   onboard,
   supply,
   togglePresale,
+  toggleSale,
   walletReset,
   walletState,
+  withdraw,
 } from "./script";
 
 //connect to the wallet
@@ -39,16 +41,19 @@ global.walletReset = () => {
 
 //toggle presale
 
-global.togglePresale = ()=>{
+global.toggle_presale = () => {
   togglePresale();
-}
+};
 
 //toggle sale
-global.toggleSale = ()=>{
+global.toggle_sale = () => {
   toggleSale();
-}
+};
 
-
+//withdraw
+global.withdraw = () => {
+  withdraw();
+};
 
 global.state = walletState();
 global.onboardObj = onboard;
