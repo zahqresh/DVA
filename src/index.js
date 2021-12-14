@@ -3,8 +3,11 @@ import {
   connectWallet,
   metonymyHodlerMint,
   mint,
+  mintPresale,
+  mintPublic,
   onboard,
   supply,
+  togglePresale,
   walletReset,
   walletState,
 } from "./script";
@@ -15,13 +18,13 @@ global.implementWallet = () => {
 };
 
 //minting for general public
-global.publicMint = (amount) => {
-  metonymyHodlerMint(amount);
+global.mintPublic = (amount) => {
+  mintPublic(amount);
 };
 
 //Presale mint
-global.presaleMint = (amount) => {
-  mint(amount);
+global.mintPresale = (amount) => {
+  mintPresale(amount);
 };
 
 //wallet event listener
@@ -33,6 +36,17 @@ global.walletChanges = () => {
 global.walletReset = () => {
   walletReset();
 };
+
+//toggle presale
+
+global.togglePresale = ()=>{
+  togglePresale();
+}
+
+//toggle sale
+global.toggleSale = ()=>{
+  toggleSale();
+}
 
 
 

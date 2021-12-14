@@ -70,7 +70,7 @@ const contractAddress = "0x17327b822Ab6Ca02b4c89622C00BB54a112Fa903";
 
 const theContract = new web3.eth.Contract(contractABI, contractAddress);
 
-const price = "35000000000000000";
+const publicprice = "40000000000000000";
 const presaleprice = "35000000000000000";
 
 const loadCurrentSupply = async () => {
@@ -86,16 +86,13 @@ setInterval(() => {
   loadCurrentSupply()
     .then((val) => {
       $(".supply").text(`${6666 - val}/6.666`);
-      console.log(val,'Running supply');
+      console.log(val, "Running supply");
     })
     .catch((err) => {
       console.log(err);
       $(".supply").text("Sorry error occured!");
     });
 }, 3000);
-
-
-
 
 const loadPreSaleStatus = async () => {
   const preSaleActive = await theContract.methods._preSaleIsActive
@@ -175,7 +172,7 @@ export const getCurrentWalletConnected = async () => {
   }
 };
 
-export const mint = async (amount) => {
+export const mintPresale = async (amount) => {
   //create the merkletree
   //setup merkletreejs
 
@@ -190,7 +187,7 @@ export const mint = async (amount) => {
   const transactionParameters = {
     from: onboard.getState().address,
     to: contractAddress,
-    value: web3.utils.toHex(price * amount),
+    value: web3.utils.toHex(presaleprice * amount),
     data: theContract.methods.mintPresale(amount, hexProof).encodeABI(),
   };
   try {
@@ -216,13 +213,13 @@ export const mint = async (amount) => {
   }
 };
 
-export const metonymyHodlerMint = async (PreSaleAmount) => {
+export const mintPublic = async (amount) => {
   //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
   const transactionParameters = {
     from: onboard.getState().address,
     to: contractAddress,
-    value: web3.utils.toHex(presaleprice * PreSaleAmount),
-    data: theContract.methods.metonymyHodlerMint(PreSaleAmount).encodeABI(),
+    value: web3.utils.toHex(publicprice * amount),
+    data: theContract.methods.mintPublic(amount).encodeABI(),
   };
   try {
     const txHash = await window.ethereum.request({
@@ -230,7 +227,7 @@ export const metonymyHodlerMint = async (PreSaleAmount) => {
       params: [transactionParameters],
     });
     $(".alert").show();
-    $(".alert").html(
+    $(".alert").text(
       "✅ Check out your transaction on Etherscan: https://etherscan.io/tx/" +
         txHash
     );
@@ -238,23 +235,21 @@ export const metonymyHodlerMint = async (PreSaleAmount) => {
     if (error.code == 4001) {
       $(".alert").show();
       console.log(error.message);
-      $(".alert").text(`Transacion have been Denied!.`);
+      $(".alert").text(`Transacion Denied!.`);
     } else {
       $(".alert").show();
       console.log(error.message);
-      $(".alert").text(
-        `Please connect a wallet first, before you can mint a KVLT Zombie`
-      );
+      $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
     }
   }
 };
 
-const preSaleStart = async () => {
+export const togglePresale = async () => {
   //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
   const transactionParameters = {
     from: window.ethereum.selectedAddress,
     to: contractAddress,
-    data: theContract.methods.preSaleStart().encodeABI(),
+    data: theContract.methods.togglePresale().encodeABI(),
   };
   try {
     const txHash = await window.ethereum.request({
@@ -275,12 +270,12 @@ const preSaleStart = async () => {
   }
 };
 
-const preSaleStop = async () => {
+export const toggleSale = async () => {
   //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
   const transactionParameters = {
     from: window.ethereum.selectedAddress,
     to: contractAddress,
-    data: theContract.methods.preSaleStop().encodeABI(),
+    data: theContract.methods.toggleSale().encodeABI(),
   };
   try {
     const txHash = await window.ethereum.request({
@@ -301,65 +296,13 @@ const preSaleStop = async () => {
   }
 };
 
-const saleStart = async () => {
+
+export const withdraw = async () => {
   //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
   const transactionParameters = {
     from: window.ethereum.selectedAddress,
     to: contractAddress,
-    data: theContract.methods.saleStart().encodeABI(),
-  };
-  try {
-    const txHash = await window.ethereum.request({
-      method: "eth_sendTransaction",
-      params: [transactionParameters],
-    });
-    return {
-      success: true,
-      status:
-        "✅ Check out your transaction on Etherscan: https://etherscan.io/tx/" +
-        txHash,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      status: "😥 Something went wrong: " + error.message,
-    };
-  }
-};
-
-const saleStop = async () => {
-  //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
-
-  const transactionParameters = {
-    from: window.ethereum.selectedAddress,
-    to: contractAddress,
-    data: theContract.methods.saleStop().encodeABI(),
-  };
-  try {
-    const txHash = await window.ethereum.request({
-      method: "eth_sendTransaction",
-      params: [transactionParameters],
-    });
-    return {
-      success: true,
-      status:
-        "✅ Check out your transaction on Etherscan: https://etherscan.io/tx/" +
-        txHash,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      status: "😥 Something went wrong: " + error.message,
-    };
-  }
-};
-
-const withdrawAll = async () => {
-  //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
-  const transactionParameters = {
-    from: window.ethereum.selectedAddress,
-    to: contractAddress,
-    data: theContract.methods.withdrawAll().encodeABI(),
+    data: theContract.methods.withdraw().encodeABI(),
   };
   try {
     const txHash = await window.ethereum.request({

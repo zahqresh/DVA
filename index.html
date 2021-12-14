@@ -18,13 +18,13 @@
   </head>
   <body>
     <button class="metamask-button">connect</button>
-    <button onclick="presaleMint(1)">Presale Mint 1</button>
-    <button onclick="presaleMint(3)">Presale Mint 3</button>
-    <button onclick="holdersMint(1)">Public Mint 1</button>
-    <button onclick="holdersMint(3)">Public Mint 3</button>
-    <button onclick="holdersMint(5)">Public Mint 5</button>
-    <button onclick="holdersMint(7)">Public Mint 7</button>
-    <button onclick="holdersMint(9)">Public Mint 9</button>
+    <button onclick="mintPresale(1)">Presale Mint 1</button>
+    <button onclick="mintPresale(3)">Presale Mint 3</button>
+    <button onclick="mintPublic(1)">Public Mint 1</button>
+    <button onclick="mintPublic(3)">Public Mint 3</button>
+    <button onclick="mintPublic(5)">Public Mint 5</button>
+    <button onclick="mintPublic(7)">Public Mint 7</button>
+    <button onclick="mintPublic(9)">Public Mint 9</button>
     <button onclick="walletReset()">Reset Wallet</button>
     <button onclick="">Withdraw</button>
     <button onclick="">Toggle Presale</button>
@@ -33,7 +33,7 @@
     <div class="supply"></div>
     <div class="alert"></div>
     <div class="net_version_alert"></div>
-    <script src="/dist/main-UgtU.js"></script>
+    <script src="/dist/main.js"></script>
     <script>
     
       // show Presale True / false
