@@ -1,6 +1,9 @@
 import {
   addWalletListener,
   connectWallet,
+  get_root,
+  loadPreSaleStatus,
+  loadSaleStatus,
   metonymyHodlerMint,
   mint,
   mintPresale,
@@ -53,6 +56,22 @@ global.toggle_sale = () => {
 //withdraw
 global.withdraw = () => {
   withdraw();
+};
+
+//presale and sale status
+global.pre_sale_status = () => {
+  loadPreSaleStatus();
+};
+
+//load sale status
+global.sale_status = () => {
+  loadSaleStatus();
+};
+
+//get root
+
+global.root = () => {
+  get_root();
 };
 
 global.state = walletState();

@@ -94,24 +94,36 @@ setInterval(() => {
     });
 }, 3000);
 
-const loadPreSaleStatus = async () => {
-  const preSaleActive = await theContract.methods._preSaleIsActive
+export const loadPreSaleStatus = async () => {
+  const preSaleActive = await theContract.methods.PresaleIsActive
     .call()
     .call()
     .then(function (res) {
       return res.toString();
     });
-  return preSaleActive;
+  $(".pre_sale_status").text(`${preSaleActive}`);
 };
 
-const loadSaleStatus = async () => {
-  const SaleActive = await theContract.methods._saleIsActive
+//sale status
+export const loadSaleStatus = async () => {
+  const SaleActive = await theContract.methods.saleIsActive
     .call()
     .call()
     .then(function (res) {
       return res.toString();
     });
-  return SaleActive;
+  $(".sale_status").text(`${SaleActive}`);
+};
+
+//get root
+export const get_root = async () => {
+  const root = await theContract.methods.root
+    .call()
+    .call()
+    .then(function (res) {
+      return res.toString();
+    });
+  $(".root").text(`${root}`);
 };
 
 const loadBalanceContract = async () => {
@@ -256,6 +268,7 @@ export const togglePresale = async () => {
       method: "eth_sendTransaction",
       params: [transactionParameters],
     });
+
     return {
       success: true,
       status:
@@ -295,7 +308,6 @@ export const toggleSale = async () => {
     };
   }
 };
-
 
 export const withdraw = async () => {
   //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
