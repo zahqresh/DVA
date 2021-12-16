@@ -1,2 +1,2 @@
-# Bobos Webflow Script
+# TDR Webflow Script
 Web3js and onboardjs implementation for bobos
