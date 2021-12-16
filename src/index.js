@@ -1,20 +1,8 @@
 import {
   addWalletListener,
   connectWallet,
-  get_root,
-  loadPreSaleStatus,
-  loadSaleStatus,
-  metonymyHodlerMint,
-  mint,
   mintPresale,
   mintPublic,
-  onboard,
-  supply,
-  togglePresale,
-  toggleSale,
-  walletReset,
-  walletState,
-  withdraw,
 } from "./script";
 
 //connect to the wallet
@@ -30,48 +18,6 @@ global.mintPublic = (amount) => {
 //Presale mint
 global.mintPresale = (amount) => {
   mintPresale(amount);
-};
-
-//wallet event listener
-global.walletChanges = () => {
-  addWalletListener();
-};
-
-//reset the wallet
-global.walletReset = () => {
-  walletReset();
-};
-
-//toggle presale
-
-global.toggle_presale = () => {
-  togglePresale();
-};
-
-//toggle sale
-global.toggle_sale = () => {
-  toggleSale();
-};
-
-//withdraw
-global.withdraw = () => {
-  withdraw();
-};
-
-//presale and sale status
-global.pre_sale_status = () => {
-  loadPreSaleStatus();
-};
-
-//load sale status
-global.sale_status = () => {
-  loadSaleStatus();
-};
-
-//get root
-
-global.root = () => {
-  get_root();
 };
 
 global.state = walletState();

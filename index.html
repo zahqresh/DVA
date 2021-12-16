@@ -29,17 +29,17 @@
   </head>
   <body>
     <div class="container-fluid mt-3">
-      <button class="btn btn-md btn-primary mt-2 metamask-button">connect</button>
+      <button class="btn btn-md btn-primary mt-2 metamask-button" onclick="implementWallet()">connect</button>
       <button class="btn btn-md btn-primary mt-2" onclick="mintPresale(1)">
         Presale Mint 1
       </button>
-      <button class="btn btn-md btn-primary mt-2" onclick="mintPresale(3)">
+      <button class="btn btn-md btn-primary mt-2" onclick="mint_presale(3)">
         Presale Mint 3
       </button>
       <button class="btn btn-md btn-primary mt-2" onclick="mintPublic(1)">
         Public Mint 1
       </button>
-      <button class="btn btn-md btn-primary mt-2" onclick="mintPublic(3)">
+      <button class="btn btn-md btn-primary mt-2" onclick="mint_public(3)">
         Public Mint 3
       </button>
       <button class="btn btn-md btn-primary mt-2" onclick="mintPublic(5)">
@@ -76,29 +76,30 @@
       <div class="alert"></div>
       <div class="net_version_alert"></div>
     </div>
-    <script src="/dist/main-lWRs.js"></script>
+    <script src="/dist/main-6nVc.js"></script>
     <script>
       //moniter sales changes
 
-      setInterval(()=>{
-        root();
-        pre_sale_status();
-        sale_status();
-      },1000)
+      // setInterval(()=>{
+      //   root();
+      //   pre_sale_status();
+      //   sale_status();
+      // },1000)
 
-      walletChanges();
+      //walletChanges();
 
-      let state = onboardObj.getState();
+      // let state = onboardObj.getState();
 
-      $(".metamask-button").click(function () {
-        if (onboardObj.getState().address != undefined) {
-          walletReset();
-          console.log("reseting wallet");
-          $(".metamask-button").text("Connect");
-        } else {
-          implementWallet();
-        }
-      });
+      // $(".metamask-button").click(function () {
+      //   if (onboardObj.getState().address != undefined) {
+      //     walletReset();
+      //     console.log("reseting wallet");
+      //     $(".metamask-button").text("Connect");
+      //   } else {
+          
+      //     implementWallet();
+      //   }
+      // });
     </script>
   </body>
 </html>

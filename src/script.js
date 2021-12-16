@@ -17,10 +17,19 @@ const RPC_URL = `https://mainnet.infura.io/v3/${INFURA_KEY}`;
 const APP_NAME = "onboardjs";
 
 //merkletree config
-const whitelistAddresses = addresses;
+const whitelistAddresses = [
+  "0xA030ed6d2752a817747a30522B4f3F1b7f039c80",
+  "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
+  "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2",
+  "0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db",
+  "0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB",
+];
 
 const leafNodes = whitelistAddresses.map((addr) => keccak256(addr));
-const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true });
+const merkleTree = new MerkleTree(leafNodes, keccak256, {
+  sortPairs: true,
+  duplicateOdd: true,
+});
 
 //wallet options to provide to users
 const wallets = [
@@ -49,7 +58,7 @@ const wallets = [
 
 export const onboard = Onboard({
   dappId: "e57157dd-aa3a-4b2a-a88d-36520d0193d9", // [String] The API key created by step one above
-  networkId: 4, // [Integer] The Ethereum network ID your Dapp uses.
+  networkId: 80001, // [Integer] The Ethereum network ID your Dapp uses.
   subscriptions: {
     wallet: (wallet) => {
       web = new Web3(wallet.provider);
@@ -62,20 +71,19 @@ export const onboard = Onboard({
 
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(
-  "wss://eth-rinkeby.alchemyapi.io/v2/59kESS0j2TfE3vAK8-aCcoUggCc3WTaL"
+  "https://polygon-mumbai.g.alchemy.com/v2/59kESS0j2TfE3vAK8-aCcoUggCc3WTaL"
 );
 
 const contractABI = abi;
-const contractAddress = "0x17327b822Ab6Ca02b4c89622C00BB54a112Fa903";
+const contractAddress = "0x10A6B33570953169A0D7BD0B2993cDec2F5d3238";
 
 const theContract = new web3.eth.Contract(contractABI, contractAddress);
 
-const publicprice = "40000000000000000";
-const presaleprice = "35000000000000000";
+const publicprice = "50000000000000000";
+const presaleprice = "30000000000000000";
 
 const loadCurrentSupply = async () => {
-  const supply = await theContract.methods.getCurrentId().call();
-
+  const supply = await theContract.methods.totalSupply().call();
   return supply;
 };
 
@@ -85,7 +93,7 @@ const loadCurrentSupply = async () => {
 setInterval(() => {
   loadCurrentSupply()
     .then((val) => {
-      $(".supply").text(`${6666 - val}/6.666`);
+      $(".supply").text(`${val}`);
       console.log(val, "Running supply");
     })
     .catch((err) => {
@@ -95,8 +103,7 @@ setInterval(() => {
 }, 3000);
 
 export const loadPreSaleStatus = async () => {
-  const preSaleActive = await theContract.methods.PresaleIsActive
-    .call()
+  const preSaleActive = await theContract.methods.PresaleIsActive.call()
     .call()
     .then(function (res) {
       return res.toString();
@@ -117,7 +124,7 @@ export const loadSaleStatus = async () => {
 
 //get root
 export const get_root = async () => {
-  const root = await theContract.methods.root
+  const root = await theContract.methods.merkleRoot
     .call()
     .call()
     .then(function (res) {
@@ -185,22 +192,24 @@ export const getCurrentWalletConnected = async () => {
 };
 
 export const mintPresale = async (amount) => {
-  //create the merkletree
-  //setup merkletreejs
-
-  //console.log(merkleTree.getHexRoot())
-
+  console.log("inside ./script");
   const claimingAddress = keccak256(onboard.getState().address);
 
   //get the root for the whitelisted address
   const hexProof = merkleTree.getHexProof(claimingAddress);
+  const proof = [
+    "0x5931b4ed56ace4c46b68524cb5bcbf4195f1bbaacbe5228fbd090546c88dd229",
+    "0x39a01635c6a38f8beb0adde454f205fffbb2157797bf1980f8f93a5f70c9f8e6",
+    "0x00518f01337d9642f00fccd733b39c7db3cc6ed5d889ee0efe99dcb103584ea1",
+  ];
 
+  console.log(hexProof == proof);
   //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
   const transactionParameters = {
     from: onboard.getState().address,
     to: contractAddress,
     value: web3.utils.toHex(presaleprice * amount),
-    data: theContract.methods.mintPresale(amount, hexProof).encodeABI(),
+    data: theContract.methods.presaleMint(amount, hexProof).encodeABI(),
   };
   try {
     const txHash = await window.ethereum.request({
@@ -226,12 +235,13 @@ export const mintPresale = async (amount) => {
 };
 
 export const mintPublic = async (amount) => {
+  console.log("inside ./script");
   //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
   const transactionParameters = {
     from: onboard.getState().address,
     to: contractAddress,
     value: web3.utils.toHex(publicprice * amount),
-    data: theContract.methods.mintPublic(amount).encodeABI(),
+    data: theContract.methods.mint(amount).encodeABI(),
   };
   try {
     const txHash = await window.ethereum.request({
