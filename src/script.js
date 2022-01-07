@@ -16,16 +16,16 @@ const CONTACT_EMAIL = "muhammadhamza2965@gmail.com";
 const RPC_URL = `https://mainnet.infura.io/v3/${INFURA_KEY}`;
 const APP_NAME = "onboardjs";
 
-//merkletree config
-const whitelistAddresses = [
-  "0xA030ed6d2752a817747a30522B4f3F1b7f039c80",
-  "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
-  "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2",
-  "0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db",
-  "0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB",
-];
+// //merkletree config
+// const whitelistAddresses = [
+//   "0xA030ed6d2752a817747a30522B4f3F1b7f039c80",
+//   "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
+//   "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2",
+//   "0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db",
+//   "0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB",
+// ];
 
-const leafNodes = whitelistAddresses.map((addr) => keccak256(addr));
+const leafNodes = addresses.map((addr) => keccak256(addr));
 const merkleTree = new MerkleTree(leafNodes, keccak256, {
   sortPairs: true,
   duplicateOdd: true,
@@ -58,7 +58,7 @@ const wallets = [
 
 export const onboard = Onboard({
   dappId: "e57157dd-aa3a-4b2a-a88d-36520d0193d9", // [String] The API key created by step one above
-  networkId: 80001, // [Integer] The Ethereum network ID your Dapp uses.
+  networkId: 137, // [Integer] The Ethereum network ID your Dapp uses.
   subscriptions: {
     wallet: (wallet) => {
       web = new Web3(wallet.provider);
@@ -71,18 +71,18 @@ export const onboard = Onboard({
 
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(
-  "https://polygon-mumbai.g.alchemy.com/v2/59kESS0j2TfE3vAK8-aCcoUggCc3WTaL"
+  "https://polygon-mainnet.g.alchemy.com/v2/59kESS0j2TfE3vAK8-aCcoUggCc3WTaL"
 );
 
 const contractABI = abi;
-const contractAddress = "0x10A6B33570953169A0D7BD0B2993cDec2F5d3238";
+const contractAddress = "0xCd58b811E42Ad65fE4d0548F58a7e5Fe36417F4F";
 
 const theContract = new web3.eth.Contract(contractABI, contractAddress);
 
 const publicprice = "50000000000000000";
-const presaleprice = "30000000000000000";
+const presaleprice = "00000000000000000";
 
-const loadCurrentSupply = async () => {
+const loadCurrentSupply = async () => { 
   const supply = await theContract.methods.totalSupply().call();
   return supply;
 };

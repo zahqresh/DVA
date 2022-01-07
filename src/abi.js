@@ -184,6 +184,13 @@ export const abi = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "bool", name: "_state", type: "bool" }],
+    name: "pauseSale",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "paused",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
@@ -235,6 +242,13 @@ export const abi = [
     name: "safeTransferFrom",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "salePaused",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
     type: "function",
   },
   {
