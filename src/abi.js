@@ -80,6 +80,30 @@ export const abi = [
     type: "event",
   },
   {
+    inputs: [],
+    name: "airDropCost",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "_mintAmount", type: "uint256" },
+      { internalType: "bytes32[]", name: "_proof", type: "bytes32[]" },
+    ],
+    name: "airdrop",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "airdropPaused",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "address", name: "to", type: "address" },
       { internalType: "uint256", name: "tokenId", type: "uint256" },
@@ -118,12 +142,33 @@ export const abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getBalance",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getCurrentId",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "address", name: "owner", type: "address" },
       { internalType: "address", name: "operator", type: "address" },
     ],
     name: "isApprovedForAll",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "maxAirDropAmount",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
@@ -185,6 +230,13 @@ export const abi = [
   },
   {
     inputs: [{ internalType: "bool", name: "_state", type: "bool" }],
+    name: "pauseAirdrop",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "bool", name: "_state", type: "bool" }],
     name: "pauseSale",
     outputs: [],
     stateMutability: "nonpayable",
@@ -205,10 +257,7 @@ export const abi = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "uint256", name: "_mintAmount", type: "uint256" },
-      { internalType: "bytes32[]", name: "_proof", type: "bytes32[]" },
-    ],
+    inputs: [{ internalType: "uint256", name: "_mintAmount", type: "uint256" }],
     name: "presaleMint",
     outputs: [],
     stateMutability: "payable",
@@ -253,6 +302,23 @@ export const abi = [
   },
   {
     inputs: [
+      { internalType: "address", name: "winner", type: "address" },
+      { internalType: "uint256", name: "_mintAmount", type: "uint256" },
+    ],
+    name: "sendNFT",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "_newCost", type: "uint256" }],
+    name: "setAirDropCost",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
       { internalType: "address", name: "operator", type: "address" },
       { internalType: "bool", name: "approved", type: "bool" },
     ],
@@ -264,6 +330,20 @@ export const abi = [
   {
     inputs: [{ internalType: "uint256", name: "_newCost", type: "uint256" }],
     name: "setCost",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "_newCost", type: "uint256" }],
+    name: "setMaxAirDropAmount",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "_maxSupply", type: "uint256" }],
+    name: "setMaxSupply",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

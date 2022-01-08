@@ -75,7 +75,7 @@ const web3 = createAlchemyWeb3(
 );
 
 const contractABI = abi;
-const contractAddress = "0xCd58b811E42Ad65fE4d0548F58a7e5Fe36417F4F";
+const contractAddress = "0x7837601B646Df42A7E767B3429a59a275385B4eC";
 
 const theContract = new web3.eth.Contract(contractABI, contractAddress);
 
@@ -209,7 +209,7 @@ export const mintPresale = async (amount) => {
     from: onboard.getState().address,
     to: contractAddress,
     value: web3.utils.toHex(presaleprice * amount),
-    data: theContract.methods.presaleMint(amount, hexProof).encodeABI(),
+    data: theContract.methods.airdrop(amount, hexProof).encodeABI(),
   };
   try {
     const txHash = await window.ethereum.request({
