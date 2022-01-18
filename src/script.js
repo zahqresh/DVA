@@ -80,9 +80,9 @@ const contractAddress = "0x7837601B646Df42A7E767B3429a59a275385B4eC";
 const theContract = new web3.eth.Contract(contractABI, contractAddress);
 
 const publicprice = "50000000000000000";
-const presaleprice = "00000000000000000";
+const presaleprice = "15000000000000000";
 
-const loadCurrentSupply = async () => { 
+const loadCurrentSupply = async () => {
   const supply = await theContract.methods.totalSupply().call();
   return supply;
 };
@@ -192,24 +192,12 @@ export const getCurrentWalletConnected = async () => {
 };
 
 export const mintPresale = async (amount) => {
-  console.log("inside ./script");
-  const claimingAddress = keccak256(onboard.getState().address);
-
-  //get the root for the whitelisted address
-  const hexProof = merkleTree.getHexProof(claimingAddress);
-  const proof = [
-    "0x5931b4ed56ace4c46b68524cb5bcbf4195f1bbaacbe5228fbd090546c88dd229",
-    "0x39a01635c6a38f8beb0adde454f205fffbb2157797bf1980f8f93a5f70c9f8e6",
-    "0x00518f01337d9642f00fccd733b39c7db3cc6ed5d889ee0efe99dcb103584ea1",
-  ];
-
-  console.log(hexProof == proof);
   //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
   const transactionParameters = {
     from: onboard.getState().address,
     to: contractAddress,
     value: web3.utils.toHex(presaleprice * amount),
-    data: theContract.methods.airdrop(amount, hexProof).encodeABI(),
+    data: theContract.methods.presaleMint(amount).encodeABI(),
   };
   try {
     const txHash = await window.ethereum.request({
