@@ -217,7 +217,7 @@ export const mintPresale = async (amount) => {
     } else {
       $(".alert").show();
       console.log(error.message);
-      $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+      $(".alert").text(`Please connect a wallet first, To mint a Donut`);
     }
   }
 };
@@ -249,7 +249,7 @@ export const mintPublic = async (amount) => {
     } else {
       $(".alert").show();
       console.log(error.message);
-      $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+      $(".alert").text(`Please connect a wallet first, To mint a Donut`);
     }
   }
 };
